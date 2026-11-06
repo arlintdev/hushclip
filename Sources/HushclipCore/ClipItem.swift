@@ -75,9 +75,13 @@ public struct ClipItem: Codable, Identifiable, Hashable, Sendable {
 public struct VaultFile: Codable, Sendable {
     public var version: Int
     public var items: [ClipItem]
+    /// Raw X25519 private key that opens clips captured while locked (see `InboxCrypto`).
+    /// Absent in vaults written before 1.2.
+    public var inboxPrivateKey: Data?
 
-    public init(version: Int = 1, items: [ClipItem]) {
+    public init(version: Int = 1, items: [ClipItem], inboxPrivateKey: Data? = nil) {
         self.version = version
         self.items = items
+        self.inboxPrivateKey = inboxPrivateKey
     }
 }

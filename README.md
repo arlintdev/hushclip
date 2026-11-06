@@ -28,6 +28,7 @@
 - **Global overlay on ⌘⇧V.** A floating panel opens over whatever you're doing. Type to search, use arrow keys to pick, press Return to paste straight into the app you were in.
 - **Automatic categories.** Every clip is labelled by local regex and heuristic rules. There's no network access and no AI.
 - **Encrypted at rest.** History and images are sealed with **AES-256-GCM** (CryptoKit). The 256-bit key is generated on your Mac and kept in your login Keychain as this-device-only. Nothing is ever written to disk in plaintext.
+- **Touch ID lock.** Optionally lock your history until you unlock it with Touch ID (or your Mac password). Choose when it locks: when the screen locks or the Mac sleeps, or after 15 minutes to 12 hours without use. While locked, the decrypted history and its key are cleared from memory, and new clips are still recorded, sealed so that only an unlock can read them.
 - **Careful with secrets.** Passwords, API keys and card numbers are masked in the UI (hold <kbd>⌥</kbd> to reveal) and auto-deleted after an hour by default. Hushclip follows the [nspasteboard.org](http://nspasteboard.org) conventions: it skips *transient* items and labels *concealed* items from password managers as passwords (or skips them entirely, if you choose).
 - **Native and light.** Swift + AppKit + SwiftUI, one universal binary, runs only in the menu bar, no dependencies.
 
@@ -92,7 +93,8 @@ The two versions are the same app. The App Store version runs in the App Sandbox
 |---|---|
 | **At rest** | `~/Library/Application Support/Hushclip/history.vault` (index and text) plus `blobs/*.vault` (images). Each file is `CLIPSTR1` ‖ AES-256-GCM nonce ‖ ciphertext ‖ tag, with the header bound as associated data. The folder is `0700` and the files are `0600`. |
 | **Key** | 256 random bits, stored in the login Keychain as a generic password (`dev.arlint.clipster` / `vault-key`), `WhenUnlockedThisDeviceOnly`, never synced. |
-| **In memory** | History is decrypted into memory while Hushclip runs. |
+| **In memory** | History is decrypted into memory while Hushclip is unlocked. |
+| **Lock (optional)** | Unlocking uses LocalAuthentication (Touch ID, Apple Watch or the login password). Locking saves the vault, then drops the decrypted history and the vault key from memory. Clips copied while locked are sealed with HPKE (X25519, HKDF-SHA256, ChaCha20-Poly1305) to an inbox public key in `inbox.pub`, and written to `inbox/*.sealed`. The matching private key is stored only inside the encrypted vault, so locked clips can be read only after unlocking. Hushclip always starts locked when the lock is on. |
 | **Sensitive items** | Masked in the UI, excluded from content search when concealed, and deleted after 5 min to 1 week (default 1 hour). When Hushclip pastes them back, it marks them `ConcealedType` so other clipboard tools don't record them. |
 | **Network** | None. Hushclip makes no network requests. |
 | **Unreadable vault** | If the vault can't be decrypted (for example, the Keychain item was deleted), Hushclip moves it aside instead of overwriting it. |

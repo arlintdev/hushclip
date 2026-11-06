@@ -29,6 +29,7 @@ You can delete individual items at any time, or all of them with **Clear History
 ## Permissions
 
 - **Accessibility** (optional): lets Hushclip press ⌘V for you when you choose an item, so it is pasted into the app you were using. Hushclip uses it only to send that one keystroke. Without it, Hushclip copies the item and you paste it yourself.
+- **Touch ID** (optional, off by default): lets you lock your history and unlock it with Touch ID or your Mac password. macOS handles the check; Hushclip never sees your fingerprint or password.
 - **Launch at login** (optional, off by default): starts Hushclip when you log in.
 
 ## Children

@@ -11,12 +11,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var hotKey: HotKey?
     private var statusItem: NSStatusItem!
     private var pauseItem: NSMenuItem!
+    private var lockItem: NSMenuItem!
+    private var lock: LockController!
     private var settingsWindow: NSWindow?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         Prefs.register()
 
-        store = ClipStore()
+        store = ClipStore(startLocked: Prefs.lockEnabled)
+        lock = LockController(store: store)
         monitor = PasteboardMonitor(store: store)
         monitor.start()
 
@@ -24,9 +27,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         model.perform = { [weak self] item, action in self?.use(item, action) }
         model.openSettings = { [weak self] in self?.openSettings() }
         overlay = OverlayController(model: model)
+        lock.willLock = { [weak self] in self?.overlay.hide() }
 
         hotKey = HotKey(keyCode: kVK_ANSI_V, modifiers: cmdKey | shiftKey) { [weak self] in
-            MainActor.assumeIsolated { self?.overlay.toggle() }
+            MainActor.assumeIsolated { self?.toggleOverlay() }
         }
         setUpStatusItem()
 
@@ -40,9 +44,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         store.saveNow()
     }
 
+    // MARK: - Overlay
+
+    private func toggleOverlay() {
+        if overlay.isShown {
+            overlay.hide()
+        } else {
+            let overlay = overlay!
+            lock.whenUnlocked { overlay.show() }
+        }
+    }
+
     // MARK: - Paste
 
     private func use(_ item: ClipItem, _ action: OverlayModel.Action) {
+        lock.noteActivity()
         Paster.write(item, store: store)
         monitor.ignoreCurrentContents()
         store.markUsed(item.id)
@@ -75,6 +91,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(.separator())
         pauseItem = NSMenuItem(title: "Pause Recording", action: #selector(togglePause), keyEquivalent: "")
         menu.addItem(pauseItem)
+        lockItem = NSMenuItem(title: "Lock Now", action: #selector(lockNow), keyEquivalent: "")
+        menu.addItem(lockItem)
         menu.addItem(NSMenuItem(title: "Clear History…", action: #selector(clearHistory), keyEquivalent: ""))
         menu.addItem(.separator())
         menu.addItem(NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: ","))
@@ -87,11 +105,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     func menuWillOpen(_ menu: NSMenu) {
         pauseItem.state = monitor.isPaused ? .on : .off
+        lockItem.isHidden = !Prefs.lockEnabled
+        lockItem.title = store.isLocked ? "Locked" : "Lock Now"
+        lockItem.isEnabled = !store.isLocked
+    }
+
+    @objc private func lockNow() {
+        lock.lockNow()
     }
 
     @objc private func showOverlay() {
         // Let the menu finish closing first so the panel can take key focus.
-        DispatchQueue.main.async { self.overlay.show() }
+        let overlay = overlay!, lock = lock!
+        DispatchQueue.main.async { lock.whenUnlocked { overlay.show() } }
     }
 
     @objc private func togglePause() {
@@ -103,6 +129,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc private func clearHistory() {
+        lock.whenUnlocked { [weak self] in self?.confirmClearHistory() }
+    }
+
+    private func confirmClearHistory() {
         NSApp.activate()
         let alert = NSAlert()
         alert.messageText = "Clear clipboard history?"
@@ -123,7 +153,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                     guard let self else { return }
                     NSWorkspace.shared.activateFileViewerSelecting([self.store.directory])
                 },
-                onLimitsChanged: { [weak self] in self?.store.enforceLimits() })
+                onLimitsChanged: { [weak self] in self?.store.enforceLimits() },
+                authenticate: { [weak self] reason, done in self?.lock.authenticate(reason: reason, completion: done) },
+                onLockChanged: { [weak self] in
+                    guard let self else { return }
+                    // Turning the lock off (already authenticated) opens history again.
+                    if !Prefs.lockEnabled { self.store.unlock() }
+                    self.lock.noteActivity()
+                })
             let window = NSWindow(contentViewController: NSHostingController(rootView: view))
             window.title = "Hushclip Settings"
             window.styleMask = [.titled, .closable]

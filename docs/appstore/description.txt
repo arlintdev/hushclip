@@ -14,6 +14,7 @@ Press Tab to flip through categories, or just start typing.
 
 PRIVATE BY DESIGN
 • Your history is encrypted with AES-256-GCM before it touches the disk.
+• Lock it with Touch ID: when your screen locks or your Mac sleeps, or after 15 minutes to 12 hours. Clips you copy while it's locked stay sealed until you unlock.
 • The key is created on your Mac and kept in your Keychain. It never leaves this device.
 • Passwords, keys and card numbers are masked on screen (hold Option to peek) and deleted automatically after an hour, or a time you choose.
 • Items that password managers mark as concealed are labelled as passwords, or skipped entirely if you prefer.
@@ -26,6 +27,6 @@ FAST AND KEYBOARD-FIRST
 • ⌘Delete removes an item
 
 NATIVE AND LIGHT
-Hushclip is written in Swift, lives quietly in your menu bar, and uses almost no resources. It is free and open source.
+Hushclip is written in Swift, lives quietly in your menu bar, and uses almost no resources. Pay once, own it forever: no subscription, no in-app purchases. Hushclip is also open source.
 
 Optional: allow Accessibility access so Hushclip can paste for you. Without it, Hushclip copies the item and you press ⌘V yourself.
