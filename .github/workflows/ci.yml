@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Test & build (universal)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Toolchain
+        run: |
+          sw_vers
+          xcodebuild -version
+          swift --version
+
+      - name: Unit tests
+        run: swift test
+
+      - name: Build Clipster.app
+        run: VERSION=0.0.0-ci.${{ github.run_number }} ./Scripts/build-app.sh
+
+      - name: Smoke test (render overlay)
+        run: |
+          build/Clipster.app/Contents/MacOS/Clipster --snapshot snapshot.png &
+          pid=$!
+          for _ in $(seq 1 30); do [ -s snapshot.png ] && break; sleep 1; done
+          kill $pid 2>/dev/null || true
+          test -s snapshot.png
+
+      - name: Package
+        run: ./Scripts/package.sh 0.0.0-ci.${{ github.run_number }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Clipster-ci-${{ github.run_number }}
+          path: |
+            dist/*
+            snapshot.png
+          retention-days: 14
