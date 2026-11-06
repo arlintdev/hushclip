@@ -1,6 +1,6 @@
 import AppKit
 import ApplicationServices
-import ClipsterCore
+import HushclipCore
 
 /// Puts a history item back on the pasteboard and (optionally) types ⌘V into the frontmost app.
 @MainActor
@@ -27,11 +27,13 @@ enum Paster {
         pb.setString(Bundle.main.bundleIdentifier ?? "dev.arlint.clipster", forType: PasteboardMonitor.sourceType)
     }
 
-    static var isTrusted: Bool { AXIsProcessTrusted() }
+    /// Whether Hushclip may post the ⌘V keystroke. Uses the post-event permission API,
+    /// which (unlike the AXUIElement APIs) works inside the App Sandbox. It is shown to
+    /// the user under Privacy & Security → Accessibility.
+    static var isTrusted: Bool { CGPreflightPostEventAccess() }
 
     static func promptForAccessibility() {
-        let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
-        _ = AXIsProcessTrustedWithOptions(options)
+        _ = CGRequestPostEventAccess()
     }
 
     static func openAccessibilitySettings() {

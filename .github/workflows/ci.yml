@@ -28,12 +28,12 @@ jobs:
       - name: Unit tests
         run: swift test
 
-      - name: Build Clipster.app
+      - name: Build Hushclip.app
         run: VERSION=0.0.0-ci.${{ github.run_number }} ./Scripts/build-app.sh
 
       - name: Smoke test (render overlay)
         run: |
-          build/Clipster.app/Contents/MacOS/Clipster --snapshot snapshot.png &
+          build/Hushclip.app/Contents/MacOS/Hushclip --snapshot snapshot.png &
           pid=$!
           for _ in $(seq 1 30); do [ -s snapshot.png ] && break; sleep 1; done
           kill $pid 2>/dev/null || true
@@ -44,7 +44,7 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: Clipster-ci-${{ github.run_number }}
+          name: Hushclip-ci-${{ github.run_number }}
           path: |
             dist/*
             snapshot.png

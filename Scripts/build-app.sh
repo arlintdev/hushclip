@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build Clipster.app into build/.
+# Build Hushclip.app into build/.
 #
 #   VERSION   marketing version (default: 1.0.0)
 #   ARCHS     space-separated architectures (default: "arm64 x86_64" = universal)
@@ -7,24 +7,24 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-VERSION="${VERSION:-1.0.0}"
+VERSION="${VERSION:-1.1.0}"
 BUILD_NUMBER="${BUILD_NUMBER:-$(git rev-list --count HEAD 2>/dev/null || echo 1)}"
 ARCHS="${ARCHS:-arm64 x86_64}"
 SIGN_ID="${SIGN_ID:--}"
-APP="build/Clipster.app"
+APP="build/Hushclip.app"
 
 arch_flags=()
 for arch in $ARCHS; do arch_flags+=(--arch "$arch"); done
 
-echo "==> Building Clipster $VERSION ($BUILD_NUMBER) for: $ARCHS"
+echo "==> Building Hushclip $VERSION ($BUILD_NUMBER) for: $ARCHS"
 swift build -c release "${arch_flags[@]}"
 BIN_DIR="$(swift build -c release "${arch_flags[@]}" --show-bin-path)"
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cp "$BIN_DIR/Clipster" "$APP/Contents/MacOS/Clipster"
+cp "$BIN_DIR/Hushclip" "$APP/Contents/MacOS/Hushclip"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
-sed -e "s/__VERSION__/$VERSION/" -e "s/__BUILD__/$BUILD_NUMBER/" Resources/Info.plist > "$APP/Contents/Info.plist"
+sed -e "s/\$(MARKETING_VERSION)/$VERSION/" -e "s/\$(CURRENT_PROJECT_VERSION)/$BUILD_NUMBER/" Resources/Info.plist > "$APP/Contents/Info.plist"
 plutil -lint "$APP/Contents/Info.plist" >/dev/null
 
 echo "==> Signing with: $SIGN_ID"
@@ -35,5 +35,5 @@ else
     codesign --force --sign "$SIGN_ID" --options runtime --timestamp "$APP"
 fi
 codesign --verify --strict --verbose=2 "$APP"
-lipo -info "$APP/Contents/MacOS/Clipster"
+lipo -info "$APP/Contents/MacOS/Hushclip"
 echo "==> Built $APP"

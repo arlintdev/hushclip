@@ -1,0 +1,31 @@
+Hushclip keeps a searchable, encrypted history of everything you copy on your Mac, and brings it back with one shortcut.
+
+Press ⌘⇧V anywhere to open a fast, good-looking overlay. Type to search, use the arrow keys to pick, and press Return to paste straight into the app you were using.
+
+SORTED AUTOMATICALLY
+Every clip is labelled as you copy it, using rules that run entirely on your Mac:
+• Screenshots, images and files
+• Passwords and secrets such as API keys, tokens and private keys
+• Card numbers (checked with the Luhn algorithm)
+• Links, email addresses, phone numbers and IP addresses
+• Colors, shown with a live swatch
+• Code, shell commands, JSON, UUIDs, hashes, file paths and numbers
+Press Tab to flip through categories, or just start typing.
+
+PRIVATE BY DESIGN
+• Your history is encrypted with AES-256-GCM before it touches the disk.
+• The key is created on your Mac and kept in your Keychain. It never leaves this device.
+• Passwords, keys and card numbers are masked on screen (hold Option to peek) and deleted automatically after an hour, or a time you choose.
+• Items that password managers mark as concealed are labelled as passwords, or skipped entirely if you prefer.
+• No network access, no accounts, no analytics. Nothing is ever collected.
+
+FAST AND KEYBOARD-FIRST
+• ⌘1–⌘9 pastes one of your nine most recent items
+• ⌘P pins an item so it never expires
+• ⌘Return copies without pasting
+• ⌘Delete removes an item
+
+NATIVE AND LIGHT
+Hushclip is written in Swift, lives quietly in your menu bar, and uses almost no resources. It is free and open source.
+
+Optional: allow Accessibility access so Hushclip can paste for you. Without it, Hushclip copies the item and you press ⌘V yourself.

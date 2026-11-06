@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// A borderless panel that can take keyboard focus without activating Clipster,
+/// A borderless panel that can take keyboard focus without activating Hushclip,
 /// so the app you were typing in stays frontmost and receives the paste.
 final class OverlayPanel: NSPanel {
     var onResignKey: (() -> Void)?

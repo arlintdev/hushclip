@@ -5,3 +5,5 @@
 /.swiftpm/
 *.xcodeproj/xcuserdata/
 snapshot.png
+*.xcodeproj/project.xcworkspace/xcuserdata/
+/DerivedData/

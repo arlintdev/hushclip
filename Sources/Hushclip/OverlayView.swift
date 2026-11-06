@@ -1,5 +1,5 @@
 import AppKit
-import ClipsterCore
+import HushclipCore
 import SwiftUI
 
 extension ClipCategory {
@@ -181,9 +181,9 @@ struct OverlayView: View {
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.orange)
-                .help("Clipster needs Accessibility permission to press ⌘V for you. Until then, items are copied and you paste.")
+                .help("Hushclip needs Accessibility permission to press ⌘V for you. Until then, items are copied and you paste.")
             } else {
-                Text("Clipster")
+                Text("Hushclip")
                     .font(.system(size: 11, weight: .semibold, design: .rounded))
                     .foregroundStyle(.tertiary)
             }

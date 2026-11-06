@@ -1,5 +1,5 @@
 import AppKit
-import ClipsterCore
+import HushclipCore
 import CryptoKit
 import ImageIO
 
@@ -30,8 +30,8 @@ final class ClipStore: ObservableObject {
     private var blobDirectory: URL { directory.appendingPathComponent("blobs", isDirectory: true) }
 
     init(inMemory: Bool = false) {
-        directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("Clipster", isDirectory: true)
+        let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        directory = support.appendingPathComponent("Hushclip", isDirectory: true)
         imageCache.countLimit = 20
         thumbCache.countLimit = 300
 
@@ -39,6 +39,12 @@ final class ClipStore: ObservableObject {
             key = nil
             persistent = false
             return
+        }
+
+        // Hushclip was called Clipster before 1.1. Carry an existing history over to the new folder.
+        let legacy = support.appendingPathComponent("Clipster", isDirectory: true)
+        if !FileManager.default.fileExists(atPath: directory.path), FileManager.default.fileExists(atPath: legacy.path) {
+            try? FileManager.default.moveItem(at: legacy, to: directory)
         }
 
         var loadedKey: SymmetricKey?
@@ -247,7 +253,7 @@ final class ClipStore: ObservableObject {
             try sealed.write(to: url, options: .atomic)
             try? FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: url.path)
         } catch {
-            NSLog("Clipster: failed to save vault: \(error)")
+            NSLog("Hushclip: failed to save vault: \(error)")
         }
     }
 
@@ -259,7 +265,7 @@ final class ClipStore: ObservableObject {
                 try VaultCrypto.seal(data, key: key).write(to: url, options: .atomic)
                 try? FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: url.path)
             } catch {
-                NSLog("Clipster: failed to write blob: \(error)")
+                NSLog("Hushclip: failed to write blob: \(error)")
             }
         }
     }

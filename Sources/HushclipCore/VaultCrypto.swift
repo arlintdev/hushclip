@@ -8,7 +8,7 @@ public enum VaultError: Error, Equatable {
     case keychain(OSStatus)
 }
 
-/// AES-256-GCM authenticated encryption for everything Clipster writes to disk.
+/// AES-256-GCM authenticated encryption for everything Hushclip writes to disk.
 ///
 /// File layout: `CLIPSTR1` magic (8 bytes) ‖ nonce (12) ‖ ciphertext ‖ tag (16).
 /// The magic is bound in as associated data, so it can't be swapped.
@@ -55,8 +55,8 @@ public enum KeychainKeyStore {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
             kSecAttrAccount as String: account,
-            kSecAttrLabel as String: "Clipster vault key",
-            kSecAttrDescription as String: "Encrypts Clipster clipboard history",
+            kSecAttrLabel as String: "Hushclip vault key",
+            kSecAttrDescription as String: "Encrypts Hushclip clipboard history",
             kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
             kSecAttrSynchronizable as String: false,
             kSecValueData as String: keyData,

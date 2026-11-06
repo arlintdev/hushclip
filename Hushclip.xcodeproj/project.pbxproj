@@ -1,0 +1,532 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		14E4A983F1608F3AFF8CBD02 /* ClipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01028DC21894B138D240ED35 /* ClipStore.swift */; };
+		1A1BE1FFF9CFAAD641F65963 /* PasteboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF0EDFC00E8FD30B14BFAAC /* PasteboardMonitor.swift */; };
+		211B4F1AECFEEA5CF0B1DC88 /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1663DE50A9BF1B5A0C03A793 /* OverlayView.swift */; };
+		2294C293B3A51AB72E3DD884 /* libHushclipCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E74351E27E95508DA065F060 /* libHushclipCore.a */; };
+		33F6E8FEDA0E8F8F732F82AB /* Categorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1C5AD6433E8E49A321E1B5 /* Categorizer.swift */; };
+		3B27A1C651082B7250A43E8A /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC284EA7410E1DC438422FC6 /* OverlayController.swift */; };
+		548A7C8D642DE1F5A785B2EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B64FAF988BEDF288BDC4A8D /* Assets.xcassets */; };
+		6353C958D38680F22A6D863A /* Paster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EB62F29BF91E2197E983A9 /* Paster.swift */; };
+		654E9E2AC29309AEB36F1CB6 /* ColorParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA0D7A3378881929F25EF18 /* ColorParser.swift */; };
+		6E1B260CB23CA8AAE20C45A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998D3FE1C8E1B6DE90FCCC52 /* AppDelegate.swift */; };
+		90C82579D63677F403722FDB /* Prefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782B6F44DBAF7047F1D4362A /* Prefs.swift */; };
+		90CE20AE56768E2193C71523 /* ClipCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78A76634F72EB1FD3BD4EAA /* ClipCategory.swift */; };
+		918C15DEAF6B40C1DD260F05 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A31C3D8FDDEC49EE187B48 /* SettingsView.swift */; };
+		9493202C3568BC6FF966F015 /* VaultCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082139283EF7264E0DE3F2D6 /* VaultCrypto.swift */; };
+		B12B67CA71314407181FD4C6 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B644CD564C4135BC0E1F7B08 /* Snapshot.swift */; };
+		C67F23AEA04DCAB0E4E3CBF7 /* OverlayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102590951F6B5242CB172FBE /* OverlayModel.swift */; };
+		E06D60021BC72BD2A9F43621 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499EE81028C668761F6EF894 /* main.swift */; };
+		E84189625705781A966962D9 /* HotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A9B1DC0A948700A03049FC /* HotKey.swift */; };
+		F58F04C84B2D787E3BDB7A7F /* ClipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC442B28B145114C73AC63F /* ClipItem.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FB615A5F469607B32A2E6590 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFABA2B827687D692D668001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F9BF75B3F535232D20396671;
+			remoteInfo = HushclipCore;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01028DC21894B138D240ED35 /* ClipStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipStore.swift; sourceTree = "<group>"; };
+		082139283EF7264E0DE3F2D6 /* VaultCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultCrypto.swift; sourceTree = "<group>"; };
+		102590951F6B5242CB172FBE /* OverlayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayModel.swift; sourceTree = "<group>"; };
+		1663DE50A9BF1B5A0C03A793 /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
+		1FA0D7A3378881929F25EF18 /* ColorParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorParser.swift; sourceTree = "<group>"; };
+		33A31C3D8FDDEC49EE187B48 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		499EE81028C668761F6EF894 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		4AF0EDFC00E8FD30B14BFAAC /* PasteboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardMonitor.swift; sourceTree = "<group>"; };
+		5454A01E50C135A3DA82A70D /* Hushclip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hushclip.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		58A9B1DC0A948700A03049FC /* HotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKey.swift; sourceTree = "<group>"; };
+		782B6F44DBAF7047F1D4362A /* Prefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prefs.swift; sourceTree = "<group>"; };
+		7B64FAF988BEDF288BDC4A8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		89EB62F29BF91E2197E983A9 /* Paster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paster.swift; sourceTree = "<group>"; };
+		998D3FE1C8E1B6DE90FCCC52 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B644CD564C4135BC0E1F7B08 /* Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
+		BAC442B28B145114C73AC63F /* ClipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipItem.swift; sourceTree = "<group>"; };
+		CC284EA7410E1DC438422FC6 /* OverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayController.swift; sourceTree = "<group>"; };
+		E74351E27E95508DA065F060 /* libHushclipCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libHushclipCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F78A76634F72EB1FD3BD4EAA /* ClipCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipCategory.swift; sourceTree = "<group>"; };
+		FB1C5AD6433E8E49A321E1B5 /* Categorizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Categorizer.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B423DD9260AE550420C62CCE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2294C293B3A51AB72E3DD884 /* libHushclipCore.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0D1B7E387423122FEF13FEF2 = {
+			isa = PBXGroup;
+			children = (
+				CD0467462EEC5EF2D8B95004 /* Resources */,
+				CBA7318E59A5092FD693C5A6 /* Sources */,
+				BBEBE4966D84970B39502917 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		69B1D96C391F948A5DE1E59F /* HushclipCore */ = {
+			isa = PBXGroup;
+			children = (
+				FB1C5AD6433E8E49A321E1B5 /* Categorizer.swift */,
+				F78A76634F72EB1FD3BD4EAA /* ClipCategory.swift */,
+				BAC442B28B145114C73AC63F /* ClipItem.swift */,
+				1FA0D7A3378881929F25EF18 /* ColorParser.swift */,
+				082139283EF7264E0DE3F2D6 /* VaultCrypto.swift */,
+			);
+			path = HushclipCore;
+			sourceTree = "<group>";
+		};
+		BBEBE4966D84970B39502917 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5454A01E50C135A3DA82A70D /* Hushclip.app */,
+				E74351E27E95508DA065F060 /* libHushclipCore.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CBA7318E59A5092FD693C5A6 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E0923037F6049B785CA7F888 /* Hushclip */,
+				69B1D96C391F948A5DE1E59F /* HushclipCore */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		CD0467462EEC5EF2D8B95004 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7B64FAF988BEDF288BDC4A8D /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E0923037F6049B785CA7F888 /* Hushclip */ = {
+			isa = PBXGroup;
+			children = (
+				998D3FE1C8E1B6DE90FCCC52 /* AppDelegate.swift */,
+				01028DC21894B138D240ED35 /* ClipStore.swift */,
+				58A9B1DC0A948700A03049FC /* HotKey.swift */,
+				499EE81028C668761F6EF894 /* main.swift */,
+				CC284EA7410E1DC438422FC6 /* OverlayController.swift */,
+				102590951F6B5242CB172FBE /* OverlayModel.swift */,
+				1663DE50A9BF1B5A0C03A793 /* OverlayView.swift */,
+				4AF0EDFC00E8FD30B14BFAAC /* PasteboardMonitor.swift */,
+				89EB62F29BF91E2197E983A9 /* Paster.swift */,
+				782B6F44DBAF7047F1D4362A /* Prefs.swift */,
+				33A31C3D8FDDEC49EE187B48 /* SettingsView.swift */,
+				B644CD564C4135BC0E1F7B08 /* Snapshot.swift */,
+			);
+			path = Hushclip;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		84660E3DC300BC1AA9BFCF9A /* Hushclip */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A85C6C79BCD23753FA804482 /* Build configuration list for PBXNativeTarget "Hushclip" */;
+			buildPhases = (
+				5380D5FED64EA0147FF73785 /* Sources */,
+				7904B32BC8F3D66F01B9DAEE /* Resources */,
+				B423DD9260AE550420C62CCE /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BE0E5B7124F1333A7204CAB3 /* PBXTargetDependency */,
+			);
+			name = Hushclip;
+			packageProductDependencies = (
+			);
+			productName = Hushclip;
+			productReference = 5454A01E50C135A3DA82A70D /* Hushclip.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F9BF75B3F535232D20396671 /* HushclipCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BE3FC52CB9264C17FDDAFC5 /* Build configuration list for PBXNativeTarget "HushclipCore" */;
+			buildPhases = (
+				DA9C9CD725972A260C34085F /* Sources */,
+				6407997B0D4236A9DF3D5A11 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HushclipCore;
+			packageProductDependencies = (
+			);
+			productName = HushclipCore;
+			productReference = E74351E27E95508DA065F060 /* libHushclipCore.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FFABA2B827687D692D668001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					84660E3DC300BC1AA9BFCF9A = {
+						DevelopmentTeam = 2S4A4V6TJD;
+						ProvisioningStyle = Automatic;
+					};
+					F9BF75B3F535232D20396671 = {
+						DevelopmentTeam = 2S4A4V6TJD;
+					};
+				};
+			};
+			buildConfigurationList = C78BF13ACEB3D984153436F9 /* Build configuration list for PBXProject "Hushclip" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 0D1B7E387423122FEF13FEF2;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = BBEBE4966D84970B39502917 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F9BF75B3F535232D20396671 /* HushclipCore */,
+				84660E3DC300BC1AA9BFCF9A /* Hushclip */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7904B32BC8F3D66F01B9DAEE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				548A7C8D642DE1F5A785B2EE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6407997B0D4236A9DF3D5A11 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5380D5FED64EA0147FF73785 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E1B260CB23CA8AAE20C45A6 /* AppDelegate.swift in Sources */,
+				14E4A983F1608F3AFF8CBD02 /* ClipStore.swift in Sources */,
+				E84189625705781A966962D9 /* HotKey.swift in Sources */,
+				3B27A1C651082B7250A43E8A /* OverlayController.swift in Sources */,
+				C67F23AEA04DCAB0E4E3CBF7 /* OverlayModel.swift in Sources */,
+				211B4F1AECFEEA5CF0B1DC88 /* OverlayView.swift in Sources */,
+				1A1BE1FFF9CFAAD641F65963 /* PasteboardMonitor.swift in Sources */,
+				6353C958D38680F22A6D863A /* Paster.swift in Sources */,
+				90C82579D63677F403722FDB /* Prefs.swift in Sources */,
+				918C15DEAF6B40C1DD260F05 /* SettingsView.swift in Sources */,
+				B12B67CA71314407181FD4C6 /* Snapshot.swift in Sources */,
+				E06D60021BC72BD2A9F43621 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA9C9CD725972A260C34085F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33F6E8FEDA0E8F8F732F82AB /* Categorizer.swift in Sources */,
+				90CE20AE56768E2193C71523 /* ClipCategory.swift in Sources */,
+				F58F04C84B2D787E3BDB7A7F /* ClipItem.swift in Sources */,
+				654E9E2AC29309AEB36F1CB6 /* ColorParser.swift in Sources */,
+				9493202C3568BC6FF966F015 /* VaultCrypto.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BE0E5B7124F1333A7204CAB3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F9BF75B3F535232D20396671 /* HushclipCore */;
+			targetProxy = FB615A5F469607B32A2E6590 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2FBC23EEB7D436396D94D7D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2S4A4V6TJD;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		43E7A9806A344C6F5BDB0DC4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.arlint.HushclipCore;
+				PRODUCT_NAME = HushclipCore;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		75C1721556B0E96C00EA34B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Resources/Hushclip.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.arlint.clipster;
+				PRODUCT_NAME = Hushclip;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		7676CF8E457291408FC1F8F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.arlint.HushclipCore;
+				PRODUCT_NAME = HushclipCore;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		7719D4B35A56306ACC82E7C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Resources/Hushclip.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.arlint.clipster;
+				PRODUCT_NAME = Hushclip;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CBB8738FF6D1F8A34DE6EF1A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 2S4A4V6TJD;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3BE3FC52CB9264C17FDDAFC5 /* Build configuration list for PBXNativeTarget "HushclipCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43E7A9806A344C6F5BDB0DC4 /* Debug */,
+				7676CF8E457291408FC1F8F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A85C6C79BCD23753FA804482 /* Build configuration list for PBXNativeTarget "Hushclip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7719D4B35A56306ACC82E7C8 /* Debug */,
+				75C1721556B0E96C00EA34B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C78BF13ACEB3D984153436F9 /* Build configuration list for PBXProject "Hushclip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBB8738FF6D1F8A34DE6EF1A /* Debug */,
+				2FBC23EEB7D436396D94D7D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FFABA2B827687D692D668001 /* Project object */;
+}

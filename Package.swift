@@ -2,24 +2,24 @@
 import PackageDescription
 
 let package = Package(
-    name: "Clipster",
+    name: "Hushclip",
     platforms: [.macOS(.v14)],
     products: [
-        .executable(name: "Clipster", targets: ["Clipster"]),
+        .executable(name: "Hushclip", targets: ["Hushclip"]),
     ],
     targets: [
         // Pure logic: categorization, model, encryption, keychain. Unit-tested.
-        .target(name: "ClipsterCore", path: "Sources/ClipsterCore"),
+        .target(name: "HushclipCore", path: "Sources/HushclipCore"),
         // The menu bar app: pasteboard monitor, hotkey, overlay UI.
         .executableTarget(
-            name: "Clipster",
-            dependencies: ["ClipsterCore"],
-            path: "Sources/Clipster"
+            name: "Hushclip",
+            dependencies: ["HushclipCore"],
+            path: "Sources/Hushclip"
         ),
         .testTarget(
-            name: "ClipsterCoreTests",
-            dependencies: ["ClipsterCore"],
-            path: "Tests/ClipsterCoreTests"
+            name: "HushclipCoreTests",
+            dependencies: ["HushclipCore"],
+            path: "Tests/HushclipCoreTests"
         ),
     ]
 )

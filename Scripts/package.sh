@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Package build/Clipster.app into dist/ as a .dmg and .zip with SHA-256 sums.
+# Package build/Hushclip.app into dist/ as a .dmg and .zip with SHA-256 sums.
 #   usage: Scripts/package.sh <version>
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 VERSION="${1:?usage: package.sh <version>}"
-APP="build/Clipster.app"
+APP="build/Hushclip.app"
 [[ -d "$APP" ]] || { echo "missing $APP — run Scripts/build-app.sh first" >&2; exit 1; }
 
 mkdir -p dist
-DMG="dist/Clipster-$VERSION.dmg"
-ZIP="dist/Clipster-$VERSION.zip"
+DMG="dist/Hushclip-$VERSION.dmg"
+ZIP="dist/Hushclip-$VERSION.zip"
 rm -f "$DMG" "$ZIP"
 
 echo "==> Creating $ZIP"
@@ -21,11 +21,11 @@ STAGE="$(mktemp -d)"
 trap 'rm -rf "${STAGE:?}"' EXIT
 cp -R "$APP" "$STAGE/"
 ln -s /Applications "$STAGE/Applications"
-hdiutil create -volname "Clipster $VERSION" -srcfolder "$STAGE" -fs HFS+ -format UDZO -ov "$DMG" >/dev/null
+hdiutil create -volname "Hushclip $VERSION" -srcfolder "$STAGE" -fs HFS+ -format UDZO -ov "$DMG" >/dev/null
 
 if [[ -n "${SIGN_ID:-}" && "${SIGN_ID}" != "-" ]]; then
     codesign --force --sign "$SIGN_ID" --timestamp "$DMG"
 fi
 
-(cd dist && shasum -a 256 "Clipster-$VERSION.dmg" "Clipster-$VERSION.zip" > SHA256SUMS.txt)
+(cd dist && shasum -a 256 "Hushclip-$VERSION.dmg" "Hushclip-$VERSION.zip" > SHA256SUMS.txt)
 cat dist/SHA256SUMS.txt

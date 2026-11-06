@@ -1,6 +1,6 @@
 import AppKit
 import Carbon.HIToolbox
-import ClipsterCore
+import HushclipCore
 import SwiftUI
 
 @MainActor
@@ -32,7 +32,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         if hotKey?.isRegistered != true {
             alert("⌘⇧V is taken",
-                  "Another app has already registered ⌘⇧V. Quit it and relaunch Clipster, or open history from the menu bar icon.")
+                  "Another app has already registered ⌘⇧V. Quit it and relaunch Hushclip, or open history from the menu bar icon.")
         }
     }
 
@@ -63,7 +63,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func setUpStatusItem() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "list.clipboard", accessibilityDescription: "Clipster")
+            button.image = NSImage(systemSymbolName: "list.clipboard", accessibilityDescription: "Hushclip")
             button.image?.isTemplate = true
         }
 
@@ -78,9 +78,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(NSMenuItem(title: "Clear History…", action: #selector(clearHistory), keyEquivalent: ""))
         menu.addItem(.separator())
         menu.addItem(NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: ","))
-        menu.addItem(NSMenuItem(title: "About Clipster", action: #selector(showAbout), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "About Hushclip", action: #selector(showAbout), keyEquivalent: ""))
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "Quit Clipster", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "Quit Hushclip", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         for item in menu.items where item.action != #selector(NSApplication.terminate(_:)) { item.target = self }
         statusItem.menu = menu
     }
@@ -98,7 +98,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         monitor.isPaused.toggle()
         statusItem.button?.image = NSImage(
             systemSymbolName: monitor.isPaused ? "list.clipboard.fill" : "list.clipboard",
-            accessibilityDescription: "Clipster")
+            accessibilityDescription: "Hushclip")
         statusItem.button?.appearsDisabled = monitor.isPaused
     }
 
@@ -125,7 +125,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 },
                 onLimitsChanged: { [weak self] in self?.store.enforceLimits() })
             let window = NSWindow(contentViewController: NSHostingController(rootView: view))
-            window.title = "Clipster Settings"
+            window.title = "Hushclip Settings"
             window.styleMask = [.titled, .closable]
             window.isReleasedWhenClosed = false
             window.center()
@@ -139,7 +139,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSApp.activate()
         NSApp.orderFrontStandardAboutPanel(options: [
             .credits: NSAttributedString(
-                string: "Encrypted clipboard history.\ngithub.com/arlintdev/clipster",
+                string: "Encrypted clipboard history.\ngithub.com/arlintdev/hushclip",
                 attributes: [.font: NSFont.systemFont(ofSize: 11), .foregroundColor: NSColor.secondaryLabelColor]),
         ])
     }

@@ -1,5 +1,5 @@
 import XCTest
-@testable import ClipsterCore
+@testable import HushclipCore
 
 final class CategorizerTests: XCTestCase {
     private func assertCategory(_ text: String, _ expected: ClipCategory, file: StaticString = #filePath, line: UInt = #line) {
@@ -38,7 +38,7 @@ final class CategorizerTests: XCTestCase {
     }
 
     func testContactAndNetwork() {
-        assertCategory("https://github.com/arlintdev/clipster", .url)
+        assertCategory("https://github.com/arlintdev/hushclip", .url)
         assertCategory("www.apple.com/macos", .url)
         assertCategory("someone@example.com", .email)
         assertCategory("+1 (555) 123-4567", .phone)
@@ -61,17 +61,17 @@ final class CategorizerTests: XCTestCase {
     }
 
     func testPathsCommandsCode() {
-        assertCategory("~/Library/Application Support/Clipster", .path)
+        assertCategory("~/Library/Application Support/Hushclip", .path)
         assertCategory("/usr/local/bin/swift", .path)
         assertCategory("git push origin main", .command)
-        assertCategory("$ brew install --cask clipster", .command)
+        assertCategory("$ brew install --cask hushclip", .command)
         assertCategory("kubectl get pods -n kube-system", .command)
         assertCategory("find . -name '*.swift'", .command)
         assertCategory("find a good restaurant", .text)
         assertCategory("func greet(name: String) -> String {\n    return \"Hi \\(name)\"\n}", .code)
         assertCategory("const x = items.map(i => i.id);\nconsole.log(x);", .code)
         assertCategory("SELECT id, name FROM users WHERE active = 1;", .code)
-        assertCategory("{\"name\": \"Clipster\", \"version\": 1}", .json)
+        assertCategory("{\"name\": \"Hushclip\", \"version\": 1}", .json)
         assertCategory("[1, 2, 3]", .json)
     }
 

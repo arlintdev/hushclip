@@ -1,6 +1,6 @@
 import CryptoKit
 import XCTest
-@testable import ClipsterCore
+@testable import HushclipCore
 
 final class VaultTests: XCTestCase {
     func testRoundTrip() throws {

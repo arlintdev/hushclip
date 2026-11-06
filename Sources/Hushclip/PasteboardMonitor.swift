@@ -1,5 +1,5 @@
 import AppKit
-import ClipsterCore
+import HushclipCore
 
 /// Polls the general pasteboard (macOS has no change notification) and records new items.
 @MainActor
@@ -32,7 +32,7 @@ final class PasteboardMonitor {
         self.timer = timer
     }
 
-    /// Call after Clipster itself writes to the pasteboard so it isn't recorded again.
+    /// Call after Hushclip itself writes to the pasteboard so it isn't recorded again.
     func ignoreCurrentContents() {
         lastChangeCount = pasteboard.changeCount
     }

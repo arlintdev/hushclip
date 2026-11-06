@@ -1,0 +1,51 @@
+# Xcode project for Mac App Store builds. Regenerate with: xcodegen generate
+# (Day-to-day development and GitHub releases use SwiftPM: swift test, Scripts/build-app.sh.)
+name: Hushclip
+options:
+  bundleIdPrefix: dev.arlint
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    MARKETING_VERSION: "1.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: 2S4A4V6TJD
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    DEAD_CODE_STRIPPING: YES
+targets:
+  HushclipCore:
+    type: library.static
+    platform: macOS
+    sources: [Sources/HushclipCore]
+    settings:
+      base:
+        PRODUCT_NAME: HushclipCore
+        SKIP_INSTALL: YES
+  Hushclip:
+    type: application
+    platform: macOS
+    sources:
+      - Sources/Hushclip
+      - Resources/Assets.xcassets
+    dependencies:
+      - target: HushclipCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.arlint.clipster
+        PRODUCT_NAME: Hushclip
+        INFOPLIST_FILE: Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Resources/Hushclip.entitlements
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_HARDENED_RUNTIME: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+        ENABLE_USER_SCRIPT_SANDBOXING: YES
+schemes:
+  Hushclip:
+    build:
+      targets:
+        Hushclip: all
+    archive:
+      config: Release

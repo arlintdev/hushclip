@@ -1,0 +1,12 @@
+Hushclip is a menu bar app (no Dock icon). After launch, a clipboard icon appears in the menu bar.
+
+How to test:
+1. Copy a few things in any app (text, a link, a screenshot with ⌘⇧⌃4).
+2. Press ⌘⇧V anywhere to open the Hushclip overlay.
+3. Use the arrow keys to select an item and press Return to paste it into the frontmost app. Tab cycles category filters; holding Option reveals masked passwords.
+
+Accessibility permission is optional. It is requested only the first time the user pastes, and is used solely to post a single ⌘V keystroke into the frontmost app. Without it, Hushclip copies the chosen item to the clipboard and the user pastes manually.
+
+The global shortcut is registered with RegisterEventHotKey and needs no special permission. The app makes no network connections and has no account or login.
+
+Source code: https://github.com/arlintdev/hushclip

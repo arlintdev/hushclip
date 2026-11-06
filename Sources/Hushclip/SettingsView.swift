@@ -75,9 +75,9 @@ struct SettingsView: View {
 
             Section {
                 HStack {
-                    Text("Clipster \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "dev")")
+                    Text("Hushclip \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "dev")")
                     Spacer()
-                    Link("github.com/arlintdev/clipster", destination: URL(string: "https://github.com/arlintdev/clipster")!)
+                    Link("github.com/arlintdev/hushclip", destination: URL(string: "https://github.com/arlintdev/hushclip")!)
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)

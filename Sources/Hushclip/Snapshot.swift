@@ -1,15 +1,15 @@
 import AppKit
-import ClipsterCore
+import HushclipCore
 import SwiftUI
 
-/// `Clipster --snapshot out.png [--light]` renders the overlay with sample data
+/// `Hushclip --snapshot out.png [--light]` renders the overlay with sample data
 /// (in memory only — the real vault and Keychain are never touched). Used for the
 /// README screenshot and for checking layout without the hotkey.
 @MainActor
 enum Snapshot {
     static func run(arguments: [String]) -> Never {
         guard let index = arguments.firstIndex(of: "--snapshot"), arguments.indices.contains(index + 1) else {
-            FileHandle.standardError.write(Data("usage: Clipster --snapshot <out.png> [--light] [--reveal] [--select N]\n".utf8))
+            FileHandle.standardError.write(Data("usage: Hushclip --snapshot <out.png> [--light] [--reveal] [--select N]\n".utf8))
             exit(2)
         }
         let output = URL(fileURLWithPath: arguments[index + 1])
@@ -91,12 +91,12 @@ enum Snapshot {
             """, app: "Xcode", bundle: "com.apple.dt.Xcode", minutesAgo: 0.1),
             screenshot,
             text("Tr0ub4dor&3-horse!", app: "1Password", bundle: "com.1password.1password", minutesAgo: 4, concealed: true),
-            text("https://github.com/arlintdev/clipster/releases", app: "Safari", bundle: "com.apple.Safari", minutesAgo: 9),
+            text("https://github.com/arlintdev/hushclip/releases", app: "Safari", bundle: "com.apple.Safari", minutesAgo: 9),
             text("kubectl get pods -n kube-system -o wide", app: "Terminal", bundle: "com.apple.Terminal", minutesAgo: 14),
             text("AKIAIOSFODNN7EXAMPLE", app: "Terminal", bundle: "com.apple.Terminal", minutesAgo: 21),
             text("#7C5CFF", app: "Figma", bundle: "com.figma.Desktop", minutesAgo: 33),
             text("hello@arlint.dev", app: "Mail", bundle: "com.apple.mail", minutesAgo: 48, pinned: true),
-            text("{\"name\": \"clipster\", \"version\": \"1.0.0\", \"encrypted\": true}", app: "Visual Studio Code", bundle: "com.microsoft.VSCode", minutesAgo: 65),
+            text("{\"name\": \"hushclip\", \"version\": \"1.1.0\", \"encrypted\": true}", app: "Visual Studio Code", bundle: "com.microsoft.VSCode", minutesAgo: 65),
             text("10.20.30.40/24", app: "Terminal", bundle: "com.apple.Terminal", minutesAgo: 90),
             text("+1 (555) 010-4242", app: "Messages", bundle: "com.apple.MobileSMS", minutesAgo: 140),
             text("Remember to send the Q4 roadmap to the team before Friday.", app: "Notes", bundle: "com.apple.Notes", minutesAgo: 200),

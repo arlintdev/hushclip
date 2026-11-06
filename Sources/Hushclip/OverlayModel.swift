@@ -1,5 +1,5 @@
 import AppKit
-import ClipsterCore
+import HushclipCore
 import Combine
 
 /// View state for the overlay: search, category filter, selection.
