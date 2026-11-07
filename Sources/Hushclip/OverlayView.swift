@@ -139,34 +139,35 @@ struct OverlayView: View {
     }
 
     private var chips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 6) {
-                ChipView(title: "All", symbol: "square.grid.2x2.fill", color: .accentColor,
-                         count: model.store.items.count, selected: model.filter == .all) {
-                    model.setFilter(.all)
-                }
-                if model.pinnedCount > 0 {
-                    ChipView(title: "Pinned", symbol: "pin.fill", color: .yellow,
-                             count: model.pinnedCount, selected: model.filter == .pinned) {
-                        model.setFilter(.pinned)
-                    }
-                }
-                ForEach(model.categoryCounts) { entry in
-                    ChipView(title: entry.category.title, symbol: entry.category.symbol, color: entry.category.color,
-                             count: entry.count, selected: model.filter == .category(entry.category)) {
-                        model.setFilter(.category(entry.category))
-                    }
+        // Wraps onto a second row (or more) instead of scrolling sideways out of view.
+        FlowLayout(spacing: 6, lineSpacing: 6) {
+            ChipView(title: "All", symbol: "square.grid.2x2.fill", color: .accentColor,
+                     count: model.store.items.count, selected: model.filter == .all) {
+                model.setFilter(.all)
+            }
+            if model.pinnedCount > 0 {
+                ChipView(title: "Pinned", symbol: "pin.fill", color: .yellow,
+                         count: model.pinnedCount, selected: model.filter == .pinned) {
+                    model.setFilter(.pinned)
                 }
             }
-            .padding(.horizontal, 16)
+            ForEach(model.categoryCounts) { entry in
+                ChipView(title: entry.category.title, symbol: entry.category.symbol, color: entry.category.color,
+                         count: entry.count, selected: model.filter == .category(entry.category)) {
+                    model.setFilter(.category(entry.category))
+                }
+            }
         }
+        .padding(.horizontal, 16)
         .padding(.bottom, 12)
     }
 
     private var footer: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: 12) {
             KeyHint(keys: "↩", label: "Paste")
             KeyHint(keys: "⌘↩", label: "Copy")
+            KeyHint(keys: "⌘K", label: "Actions")
+            KeyHint(keys: "Space", label: "Preview")
             KeyHint(keys: "⌘P", label: "Pin")
             KeyHint(keys: "⌘⌫", label: "Delete")
             KeyHint(keys: "⇥", label: "Filter")
@@ -194,6 +195,57 @@ struct OverlayView: View {
 }
 
 // MARK: - Chips
+
+/// Lays children out left to right, starting a new row when the next one doesn't fit.
+struct FlowLayout: Layout {
+    var spacing: CGFloat = 6
+    var lineSpacing: CGFloat = 6
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let rows = arrange(subviews, width: proposal.width ?? .infinity)
+        let width = rows.map(\.width).max() ?? 0
+        let height = rows.map(\.height).reduce(0, +) + lineSpacing * CGFloat(max(rows.count - 1, 0))
+        return CGSize(width: proposal.width ?? width, height: height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var y = bounds.minY
+        for row in arrange(subviews, width: bounds.width) {
+            var x = bounds.minX
+            for index in row.indices {
+                let size = subviews[index].sizeThatFits(.unspecified)
+                subviews[index].place(at: CGPoint(x: x, y: y + (row.height - size.height) / 2),
+                                      proposal: ProposedViewSize(size))
+                x += size.width + spacing
+            }
+            y += row.height + lineSpacing
+        }
+    }
+
+    private struct Row {
+        var indices: [Int] = []
+        var width: CGFloat = 0
+        var height: CGFloat = 0
+    }
+
+    private func arrange(_ subviews: Subviews, width: CGFloat) -> [Row] {
+        var rows: [Row] = []
+        var row = Row()
+        for index in subviews.indices {
+            let size = subviews[index].sizeThatFits(.unspecified)
+            let needed = row.indices.isEmpty ? size.width : row.width + spacing + size.width
+            if needed > width, !row.indices.isEmpty {
+                rows.append(row)
+                row = Row()
+            }
+            row.width = row.indices.isEmpty ? size.width : row.width + spacing + size.width
+            row.height = max(row.height, size.height)
+            row.indices.append(index)
+        }
+        if !row.indices.isEmpty { rows.append(row) }
+        return rows
+    }
+}
 
 struct ChipView: View {
     let title: String
@@ -247,6 +299,18 @@ struct ItemListView: View {
                             .contextMenu {
                                 Button("Paste") { model.perform(item, .paste) }
                                 Button("Copy") { model.perform(item, .copy) }
+                                let actions = model.actions(for: item)
+                                if !actions.isEmpty {
+                                    Divider()
+                                    ForEach(actions) { action in
+                                        Button {
+                                            model.runAction(item, action)
+                                        } label: {
+                                            Label(action.title, systemImage: action.symbol)
+                                        }
+                                    }
+                                    Divider()
+                                }
                                 Button(item.pinned ? "Unpin" : "Pin") { model.store.togglePin(item.id) }
                                 Divider()
                                 Button("Delete", role: .destructive) { model.store.delete(item.id) }
@@ -379,6 +443,10 @@ struct PreviewPane: View {
                 header(item)
                 content(item)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                let actions = model.actions(for: item)
+                if !actions.isEmpty {
+                    ActionBar(model: model, item: item, actions: actions)
+                }
                 Divider().opacity(0.5)
                 MetadataView(item: item)
             }
@@ -410,6 +478,20 @@ struct PreviewPane: View {
                     .foregroundStyle(.yellow)
             }
             Spacer()
+            if model.canEnlarge(item) {
+                Button {
+                    model.enlarged = true
+                } label: {
+                    Image(systemName: "arrow.up.left.and.arrow.down.right")
+                        .font(.system(size: 11, weight: .bold))
+                        .frame(width: 24, height: 24)
+                        .background(Circle().fill(Color.primary.opacity(0.08)))
+                        .contentShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
+                .help("Enlarge (Space)")
+            }
             if let name = item.sourceAppName {
                 HStack(spacing: 6) {
                     if let icon = AppIcons.icon(for: item.sourceBundleID) {
@@ -448,13 +530,15 @@ struct PreviewPane: View {
                         .aspectRatio(contentMode: .fit)
                         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                         .shadow(color: .black.opacity(0.25), radius: 8, y: 3)
+                        .onTapGesture { model.enlarged = true }
+                        .help("Click to enlarge (Space)")
                         .padding(18)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     Text("Image unavailable").foregroundStyle(.secondary).frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             case .files:
-                FilesPreview(paths: item.filePaths ?? [])
+                FilesPreview(paths: item.filePaths ?? []) { model.enlarged = true }
             case .text:
                 textContent(item)
             }
@@ -518,8 +602,82 @@ struct PreviewPane: View {
     }
 }
 
+// MARK: - Quick actions
+
+/// Buttons for what you can do with this clip besides pasting it: open the link,
+/// call the number, paste the color as RGB… The first "open" action is ⌘O; all are in ⌘K.
+struct ActionBar: View {
+    @ObservedObject var model: OverlayModel
+    let item: ClipItem
+    let actions: [QuickAction]
+
+    var body: some View {
+        let primary = actions.first(where: \.opens)?.id
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 6) {
+                ForEach(actions) { action in
+                    ActionButton(action: action, color: item.category.color, primary: action.id == primary) {
+                        model.runAction(item, action)
+                    }
+                }
+                Button {
+                    model.showActionsMenu()
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.system(size: 11, weight: .bold))
+                        .frame(width: 26, height: 24)
+                        .background(Circle().fill(Color.primary.opacity(0.07)))
+                        .contentShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
+                .help("All actions (⌘K)")
+            }
+            .padding(.horizontal, 16)
+        }
+        .padding(.vertical, 8)
+    }
+}
+
+struct ActionButton: View {
+    let action: QuickAction
+    let color: Color
+    let primary: Bool
+    let run: () -> Void
+    @State private var hovering = false
+
+    var body: some View {
+        Button(action: run) {
+            HStack(spacing: 5) {
+                Image(systemName: action.symbol).font(.system(size: 10.5, weight: .bold))
+                Text(action.shortTitle).font(.system(size: 12, weight: .semibold))
+                if primary {
+                    Text("⌘O")
+                        .font(.system(size: 9.5, weight: .bold, design: .rounded))
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 1)
+                        .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(Color.white.opacity(0.22)))
+                }
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .foregroundStyle(primary ? Color.white : color)
+            .background(
+                Capsule().fill(primary
+                               ? AnyShapeStyle(color.gradient.opacity(hovering ? 0.85 : 1))
+                               : AnyShapeStyle(color.opacity(hovering ? 0.22 : 0.12)))
+            )
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering = $0 }
+        .help(action.detail.map { "\(action.title)\n\($0)" } ?? action.title)
+    }
+}
+
 struct FilesPreview: View {
     let paths: [String]
+    var enlarge: () -> Void = {}
 
     var body: some View {
         if paths.count == 1, Categorizer.imageExtensions.contains((paths[0] as NSString).pathExtension.lowercased()),
@@ -529,6 +687,8 @@ struct FilesPreview: View {
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 .shadow(color: .black.opacity(0.25), radius: 8, y: 3)
+                .onTapGesture(perform: enlarge)
+                .help("Click to enlarge (Space)")
                 .padding(18)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {

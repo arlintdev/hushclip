@@ -12,6 +12,18 @@ Every clip is labelled as you copy it, using rules that run entirely on your Mac
 • Code, shell commands, JSON, UUIDs, hashes, file paths and numbers
 Press Tab to flip through categories, or just start typing.
 
+QUICK ACTIONS FOR EVERY KIND OF CLIP
+• Open a link with ⌘O, or paste it without tracking junk or as a Markdown link
+• Call or message a phone number, or start an email
+• Paste a color as HEX, RGB, HSL or SwiftUI
+• Pretty-print or minify JSON, and strip the $ prompt from shell commands
+• Paste the text from a screenshot, recognized right on your Mac
+• Show a file or path in Finder
+Press ⌘K to see every action for the selected clip.
+
+SEE IT BIG
+Click a screenshot or press Space for a full-screen preview. Pinch to zoom in, and flip through clips with the arrow keys.
+
 PRIVATE BY DESIGN
 • Your history is encrypted with AES-256-GCM before it touches the disk.
 • Lock it with Touch ID: when your screen locks or your Mac sleeps, or after 15 minutes to 12 hours. Clips you copy while it's locked stay sealed until you unlock.

@@ -29,6 +29,18 @@ enum Snapshot {
         model.reveal = arguments.contains("--reveal")
         model.accessibilityTrusted = true
 
+        if arguments.contains("--lightbox") {
+            // The full-screen preview over a stand-in desktop.
+            let size = NSSize(width: 1440, height: 900)
+            let root = ZStack {
+                LinearGradient(colors: [Color(red: 0.16, green: 0.12, blue: 0.32), Color(red: 0.05, green: 0.22, blue: 0.36)],
+                               startPoint: .topLeading, endPoint: .bottomTrailing)
+                LightboxView(model: model)
+            }
+            .frame(width: size.width, height: size.height)
+            render(root, size: size, appearance: appearance, to: output)
+        }
+
         let size = OverlayController.size
         let padding: CGFloat = 40
         let root = ZStack {
@@ -43,8 +55,13 @@ enum Snapshot {
         .frame(width: size.width + padding * 2, height: size.height + padding * 2)
         .environment(\.colorScheme, dark ? .dark : .light)
 
+        render(root, size: NSSize(width: size.width + padding * 2, height: size.height + padding * 2),
+               appearance: appearance, to: output)
+    }
+
+    private static func render(_ root: some View, size: NSSize, appearance: NSAppearance?, to output: URL) -> Never {
         let hosting = NSHostingView(rootView: root)
-        hosting.frame = NSRect(x: 0, y: 0, width: size.width + padding * 2, height: size.height + padding * 2)
+        hosting.frame = NSRect(origin: .zero, size: size)
         let window = NSWindow(contentRect: hosting.frame, styleMask: .borderless, backing: .buffered, defer: false)
         window.appearance = appearance
         window.contentView = hosting

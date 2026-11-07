@@ -1,4 +1,6 @@
 import AppKit
+import Combine
+import HushclipCore
 import SwiftUI
 
 /// A borderless panel that can take keyboard focus without activating Hushclip,
@@ -39,6 +41,12 @@ final class OverlayController {
     let model: OverlayModel
     private let panel: OverlayPanel
     private var eventMonitor: Any?
+    private lazy var lightbox: LightboxPanel = {
+        let panel = LightboxPanel()
+        panel.contentView = NSHostingView(rootView: LightboxView(model: model))
+        return panel
+    }()
+    private var cancellables: Set<AnyCancellable> = []
     private(set) var isShown = false
 
     init(model: OverlayModel) {
@@ -60,6 +68,9 @@ final class OverlayController {
         panel.onResignKey = { [weak self] in
             MainActor.assumeIsolated { self?.hide() }
         }
+        model.$enlarged.removeDuplicates().dropFirst().sink { [weak self] on in
+            on ? self?.showLightbox() : self?.hideLightbox()
+        }.store(in: &cancellables)
     }
 
     func toggle() {
@@ -85,8 +96,30 @@ final class OverlayController {
         guard isShown else { return }
         isShown = false
         removeEventMonitor()
+        model.enlarged = false
+        hideLightbox()
         panel.orderOut(nil)
         model.reveal = false
+    }
+
+    // MARK: - Full-screen preview
+
+    private func showLightbox() {
+        guard isShown else { model.enlarged = false; return }
+        let screen = panel.screen ?? NSScreen.main
+        guard let frame = screen?.frame else { return }
+        lightbox.setFrame(frame, display: false)
+        lightbox.alphaValue = 0
+        lightbox.orderFrontRegardless()
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.15
+            lightbox.animator().alphaValue = 1
+        }
+    }
+
+    private func hideLightbox() {
+        guard lightbox.isVisible else { return }
+        lightbox.orderOut(nil)
     }
 
     private func position() {
@@ -137,8 +170,11 @@ final class OverlayController {
         case 116: model.moveSelection(-8); return true                    // page up
         case 36, 76: model.activate(command ? .copy : .paste); return true // ↩
         case 48: model.cycleFilter(forward: !flags.contains(.shift)); return true // ⇥
+        case 49 where model.enlarged || (model.query.isEmpty && !command): // space, Quick Look style
+            model.toggleEnlarged(); return true
         case 53:                                                          // esc
-            if !model.query.isEmpty { model.query = "" }
+            if model.enlarged { model.enlarged = false }
+            else if !model.query.isEmpty { model.query = "" }
             else if model.filter != .all { model.setFilter(.all) }
             else { hide() }
             return true
@@ -153,12 +189,66 @@ final class OverlayController {
             }
             switch chars {
             case "p": model.togglePinSelected(); return true
+            case "o": model.openSelected(); return true
+            case "k": showActionsMenu(); return true
+            case "y": model.toggleEnlarged(); return true
             case ",": hide(); model.openSettings(); return true
             case "w": hide(); return true
             default: break
             }
         }
         return false
+    }
+
+    // MARK: - Actions menu (⌘K)
+
+    func showActionsMenu() {
+        guard isShown, let item = model.selectedItem, let view = panel.contentView else { return }
+        let model = model
+        let menu = NSMenu()
+        menu.autoenablesItems = false
+
+        menu.addItem(BlockMenuItem("Paste", symbol: "doc.on.clipboard", key: "\r", modifiers: []) {
+            model.perform(item, .paste)
+        })
+        menu.addItem(BlockMenuItem("Copy", symbol: "square.on.square", key: "\r", modifiers: .command) {
+            model.perform(item, .copy)
+        })
+
+        if model.canEnlarge(item) {
+            menu.addItem(BlockMenuItem("Quick Look", symbol: "eye", key: "y", modifiers: .command) {
+                model.enlarged = true
+            })
+        }
+
+        let actions = model.actions(for: item)
+        if !actions.isEmpty {
+            menu.addItem(.separator())
+            let primary = model.primaryAction(for: item)?.id
+            for action in actions {
+                let entry = BlockMenuItem(action.title, symbol: action.symbol,
+                                          key: action.id == primary ? "o" : "", modifiers: .command) {
+                    model.runAction(item, action)
+                }
+                if let detail = action.detail, #available(macOS 14.4, *) {
+                    entry.subtitle = detail.count > 70 ? String(detail.prefix(69)) + "…" : detail
+                }
+                menu.addItem(entry)
+            }
+        }
+
+        menu.addItem(.separator())
+        menu.addItem(BlockMenuItem(item.pinned ? "Unpin" : "Pin", symbol: item.pinned ? "pin.slash" : "pin",
+                                   key: "p", modifiers: .command) { model.store.togglePin(item.id) })
+        menu.addItem(BlockMenuItem("Delete", symbol: "trash", key: "\u{8}", modifiers: .command) {
+            model.selectedID = item.id
+            model.deleteSelected()
+        })
+
+        // Open beside the preview pane's action bar. Run after this key event finishes.
+        DispatchQueue.main.async {
+            menu.popUp(positioning: menu.items.first, at: NSPoint(x: 356, y: 150), in: view)
+        }
     }
 
     private static func roundedMask(radius: CGFloat) -> NSImage {
@@ -172,4 +262,22 @@ final class OverlayController {
         image.resizingMode = .stretch
         return image
     }
+}
+
+/// A menu item that runs a closure.
+final class BlockMenuItem: NSMenuItem {
+    private let handler: () -> Void
+
+    init(_ title: String, symbol: String, key: String, modifiers: NSEvent.ModifierFlags, handler: @escaping () -> Void) {
+        self.handler = handler
+        super.init(title: title, action: #selector(fire), keyEquivalent: key)
+        keyEquivalentModifierMask = modifiers
+        image = NSImage(systemSymbolName: symbol, accessibilityDescription: nil)
+        target = self
+    }
+
+    @available(*, unavailable)
+    required init(coder: NSCoder) { fatalError() }
+
+    @objc private func fire() { handler() }
 }

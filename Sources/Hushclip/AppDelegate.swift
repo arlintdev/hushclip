@@ -25,8 +25,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         let model = OverlayModel(store: store)
         model.perform = { [weak self] item, action in self?.use(item, action) }
+        model.runAction = { [weak self] item, action in self?.run(action, on: item) }
         model.openSettings = { [weak self] in self?.openSettings() }
         overlay = OverlayController(model: model)
+        model.showActionsMenu = { [weak self] in self?.overlay.showActionsMenu() }
         lock.willLock = { [weak self] in self?.overlay.hide() }
 
         hotKey = HotKey(keyCode: kVK_ANSI_V, modifiers: cmdKey | shiftKey) { [weak self] in
@@ -63,8 +65,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         monitor.ignoreCurrentContents()
         store.markUsed(item.id)
         overlay.hide()
+        if action == .paste { autoPaste() }
+    }
 
-        guard action == .paste, Prefs.autoPaste else { return }
+    /// Presses ⌘V in the app the user was in, if auto-paste is on and allowed.
+    private func autoPaste() {
+        guard Prefs.autoPaste else { return }
         if Paster.isTrusted {
             // Give the previous app a moment to regain key focus.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) { Paster.sendPasteKeystroke() }
@@ -72,6 +78,48 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             Prefs.askedAccessibility = true
             Paster.promptForAccessibility()
         }
+    }
+
+    // MARK: - Quick actions
+
+    private func run(_ action: QuickAction, on item: ClipItem) {
+        lock.noteActivity()
+        overlay.hide()
+        switch action.effect {
+        case .open(let url):
+            NSWorkspace.shared.open(url)
+        case .openFile(let path):
+            let url = URL(fileURLWithPath: path)
+            NSWorkspace.shared.open(url, configuration: NSWorkspace.OpenConfiguration()) { _, error in
+                // The App Sandbox may not let us open a file we were never given; show it instead.
+                guard error != nil else { return }
+                DispatchQueue.main.async { NSWorkspace.shared.activateFileViewerSelecting([url]) }
+            }
+        case .reveal(let paths):
+            NSWorkspace.shared.activateFileViewerSelecting(paths.map { URL(fileURLWithPath: $0) })
+        case .paste(let text):
+            pasteText(text, sensitive: item.concealed || item.category.isSensitive)
+        case .pasteRecognizedText:
+            guard let image = store.image(for: item)?.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+                NSSound.beep()
+                return
+            }
+            TextRecognizer.recognize(image) { [weak self] text in
+                guard let text else { NSSound.beep(); return }
+                self?.pasteText(text, sensitive: false)
+            }
+        }
+    }
+
+    /// Pastes text Hushclip made (a converted color, a cleaned link) without recording it as a new clip.
+    private func pasteText(_ text: String, sensitive: Bool) {
+        let pb = NSPasteboard.general
+        pb.clearContents()
+        pb.setString(text, forType: .string)
+        if sensitive { pb.setString("", forType: PasteboardMonitor.concealedType) }
+        pb.setString(Bundle.main.bundleIdentifier ?? "dev.arlint.clipster", forType: PasteboardMonitor.sourceType)
+        monitor.ignoreCurrentContents()
+        autoPaste()
     }
 
     // MARK: - Menu bar

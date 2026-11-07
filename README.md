@@ -29,6 +29,8 @@
 - **Automatic categories.** Every clip is labelled by local regex and heuristic rules. There's no network access and no AI.
 - **Encrypted at rest.** History and images are sealed with **AES-256-GCM** (CryptoKit). The 256-bit key is generated on your Mac and kept in your login Keychain as this-device-only. Nothing is ever written to disk in plaintext.
 - **Touch ID lock.** Optionally lock your history until you unlock it with Touch ID (or your Mac password). Choose when it locks: when the screen locks or the Mac sleeps, or after 15 minutes to 12 hours without use. While locked, the decrypted history and its key are cleared from memory, and new clips are still recorded, sealed so that only an unlock can read them.
+- **Quick actions.** Each kind of clip gets its own shortcuts: open a link (<kbd>⌘O</kbd>) or paste it without tracking parameters or as Markdown, call a phone number, paste a color as HEX/RGB/HSL/SwiftUI, pretty-print or minify JSON, show a path in Finder, or paste the text from a screenshot (recognized on-device). <kbd>⌘K</kbd> lists them all.
+- **Full-screen preview.** Click an image or press <kbd>Space</kbd> to see the selected clip full screen. Pinch to zoom into screenshots, and flip through clips with the arrow keys.
 - **Careful with secrets.** Passwords, API keys and card numbers are masked in the UI (hold <kbd>⌥</kbd> to reveal) and auto-deleted after an hour by default. Hushclip follows the [nspasteboard.org](http://nspasteboard.org) conventions: it skips *transient* items and labels *concealed* items from password managers as passwords (or skips them entirely, if you choose).
 - **Native and light.** Swift + AppKit + SwiftUI, one universal binary, runs only in the menu bar, no dependencies.
 

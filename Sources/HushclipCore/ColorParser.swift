@@ -14,6 +14,56 @@ public enum ColorParser {
         return nil
     }
 
+    // MARK: - Formatting
+
+    static func byte(_ v: Double) -> Int { Int((min(max(v, 0), 1) * 255).rounded()) }
+    static func trim(_ v: Double, places: Int = 2) -> String {
+        var s = String(format: "%.\(places)f", v)
+        while s.contains("."), s.hasSuffix("0") { s.removeLast() }
+        if s.hasSuffix(".") { s.removeLast() }
+        return s
+    }
+
+    /// `#1a2b3c`, or `#1a2b3c80` with transparency.
+    public static func hex(_ c: RGBA) -> String {
+        var s = String(format: "#%02x%02x%02x", byte(c.r), byte(c.g), byte(c.b))
+        if c.a < 1 { s += String(format: "%02x", byte(c.a)) }
+        return s
+    }
+
+    /// `rgb(26, 43, 60)` or `rgba(26, 43, 60, 0.5)`.
+    public static func rgb(_ c: RGBA) -> String {
+        let parts = "\(byte(c.r)), \(byte(c.g)), \(byte(c.b))"
+        return c.a < 1 ? "rgba(\(parts), \(trim(c.a)))" : "rgb(\(parts))"
+    }
+
+    /// `hsl(210, 40%, 17%)` or `hsla(…, 0.5)`.
+    public static func hsl(_ c: RGBA) -> String {
+        let r = min(max(c.r, 0), 1), g = min(max(c.g, 0), 1), b = min(max(c.b, 0), 1)
+        let maxV = max(r, g, b), minV = min(r, g, b)
+        let l = (maxV + minV) / 2
+        let d = maxV - minV
+        var h = 0.0, s = 0.0
+        if d > 0 {
+            s = d / (1 - abs(2 * l - 1))
+            switch maxV {
+            case r: h = 60 * ((g - b) / d).truncatingRemainder(dividingBy: 6)
+            case g: h = 60 * ((b - r) / d + 2)
+            default: h = 60 * ((r - g) / d + 4)
+            }
+            if h < 0 { h += 360 }
+        }
+        let parts = "\(Int(h.rounded()) % 360), \(Int((s * 100).rounded()))%, \(Int((l * 100).rounded()))%"
+        return c.a < 1 ? "hsla(\(parts), \(trim(c.a)))" : "hsl(\(parts))"
+    }
+
+    /// `Color(red: 0.1, green: 0.17, blue: 0.24)` for SwiftUI.
+    public static func swiftUI(_ c: RGBA) -> String {
+        var s = "Color(red: \(trim(c.r, places: 3)), green: \(trim(c.g, places: 3)), blue: \(trim(c.b, places: 3))"
+        if c.a < 1 { s += ", opacity: \(trim(c.a, places: 3))" }
+        return s + ")"
+    }
+
     static func parseHex(_ hex: String) -> RGBA? {
         var h = hex
         if h.count == 3 || h.count == 4 { h = h.map { "\($0)\($0)" }.joined() }
