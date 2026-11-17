@@ -3,9 +3,10 @@ Hushclip is a menu bar app (no Dock icon). After launch, a clipboard icon appear
 How to test:
 1. Copy a few things in any app (text, a link, a screenshot with ⌘⇧⌃4).
 2. Press ⌘⇧V anywhere to open the Hushclip overlay.
-3. Use the arrow keys to select an item and press Return to paste it into the frontmost app. Tab cycles category filters; holding Option reveals masked passwords.
+3. Use the arrow keys to select an item and press Return. Hushclip puts it back on the clipboard and shows "Copied · Press ⌘V to paste"; press ⌘V to paste it. Tab cycles category filters; holding Option reveals masked passwords.
+4. ⌘K lists actions for the selected clip (for example, open a link, or copy a color as RGB). Space shows a full-screen preview of a screenshot.
 
-Accessibility permission is optional. It is requested only the first time the user pastes, and is used solely to post a single ⌘V keystroke into the frontmost app. Without it, Hushclip copies the chosen item to the clipboard and the user pastes manually.
+Regarding guideline 2.4.5: this version no longer requests or uses Accessibility permission. The automatic-paste feature that posted a ⌘V keystroke has been removed from the Mac App Store build; Hushclip only copies to the clipboard and the user pastes. The binary contains no calls to CGRequestPostEventAccess, CGPreflightPostEventAccess or CGEventPost.
 
 The global shortcut is registered with RegisterEventHotKey and needs no special permission. The app makes no network connections and has no account or login.
 

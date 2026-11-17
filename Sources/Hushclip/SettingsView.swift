@@ -37,8 +37,10 @@ struct SettingsView: View {
                         .padding(.horizontal, 8).padding(.vertical, 2)
                         .background(RoundedRectangle(cornerRadius: 5).fill(Color.primary.opacity(0.08)))
                 }
-                Toggle("Paste into the active app after choosing", isOn: $autoPaste)
-                if autoPaste && !trusted {
+                if Paster.canAutoPaste {
+                    Toggle("Paste into the active app after choosing", isOn: $autoPaste)
+                }
+                if Paster.canAutoPaste && autoPaste && !trusted {
                     HStack {
                         Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
                         Text("Needs Accessibility permission to press ⌘V for you.")

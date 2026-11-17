@@ -260,10 +260,10 @@ let dark = Theme(dark: true), light = Theme(dark: false)
 save("1-overview") {
     background(dark)
     header(dark, title: "Everything you copied, ", accent: "one shortcut away",
-           subtitle: "Press ⌘⇧V anywhere. Search, preview and paste straight into the app you're using.")
+           subtitle: "Press ⌘⇧V anywhere. Search, preview, and copy it back with one key.")
     let r = overlay(dark, ["--select", "0"])
     pill(dark, "command", "Opens from any app", tint: 0xA78BFA, center: NSPoint(x: r.maxX - 60, y: r.minY + 470))
-    pill(dark, "return", "Return pastes it", tint: 0x67E8F9, center: NSPoint(x: r.maxX - 10, y: r.minY + 330))
+    pill(dark, "return", "Return copies it", tint: 0x67E8F9, center: NSPoint(x: r.maxX - 10, y: r.minY + 330))
 }
 
 save("2-categories") {

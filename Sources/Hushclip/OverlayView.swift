@@ -164,8 +164,10 @@ struct OverlayView: View {
 
     private var footer: some View {
         HStack(spacing: 12) {
-            KeyHint(keys: "↩", label: "Paste")
-            KeyHint(keys: "⌘↩", label: "Copy")
+            KeyHint(keys: "↩", label: Paster.verb)
+            if Paster.verb == "Paste" {
+                KeyHint(keys: "⌘↩", label: "Copy")
+            }
             KeyHint(keys: "⌘K", label: "Actions")
             KeyHint(keys: "Space", label: "Preview")
             KeyHint(keys: "⌘P", label: "Pin")
@@ -173,7 +175,7 @@ struct OverlayView: View {
             KeyHint(keys: "⇥", label: "Filter")
             KeyHint(keys: "⌥", label: "Reveal")
             Spacer()
-            if !model.accessibilityTrusted && Prefs.autoPaste {
+            if Paster.canAutoPaste && !model.accessibilityTrusted && Prefs.autoPaste {
                 Button {
                     Paster.openAccessibilitySettings()
                 } label: {
@@ -297,7 +299,9 @@ struct ItemListView: View {
                             .onTapGesture(count: 2) { model.perform(item, .paste) }
                             .simultaneousGesture(TapGesture().onEnded { model.selectedID = item.id })
                             .contextMenu {
-                                Button("Paste") { model.perform(item, .paste) }
+                                if Paster.verb == "Paste" {
+                                    Button("Paste") { model.perform(item, .paste) }
+                                }
                                 Button("Copy") { model.perform(item, .copy) }
                                 let actions = model.actions(for: item)
                                 if !actions.isEmpty {
@@ -306,7 +310,7 @@ struct ItemListView: View {
                                         Button {
                                             model.runAction(item, action)
                                         } label: {
-                                            Label(action.title, systemImage: action.symbol)
+                                            Label(action.displayTitle, systemImage: action.symbol)
                                         }
                                     }
                                     Divider()
@@ -650,7 +654,7 @@ struct ActionButton: View {
         Button(action: run) {
             HStack(spacing: 5) {
                 Image(systemName: action.symbol).font(.system(size: 10.5, weight: .bold))
-                Text(action.shortTitle).font(.system(size: 12, weight: .semibold))
+                Text(action.displayShortTitle).font(.system(size: 12, weight: .semibold))
                 if primary {
                     Text("⌘O")
                         .font(.system(size: 9.5, weight: .bold, design: .rounded))
@@ -671,7 +675,7 @@ struct ActionButton: View {
         }
         .buttonStyle(.plain)
         .onHover { hovering = $0 }
-        .help(action.detail.map { "\(action.title)\n\($0)" } ?? action.title)
+        .help(action.detail.map { "\(action.displayTitle)\n\($0)" } ?? action.displayTitle)
     }
 }
 
@@ -737,7 +741,7 @@ struct MetadataView: View {
             case .files:
                 entry("Files", "\(item.filePaths?.count ?? 0)")
             }
-            if item.useCount > 0 { entry("Pasted", "\(item.useCount)×") }
+            if item.useCount > 0 { entry("Used", "\(item.useCount)×") }
             Spacer()
         }
         .padding(.horizontal, 16)

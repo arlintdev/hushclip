@@ -83,9 +83,9 @@ The rules live in [`Sources/HushclipCore/Categorizer.swift`](Sources/HushclipCor
 2. Drag **Hushclip** into **Applications** and open it. A clipboard icon appears in the menu bar.
 3. Press <kbd>⌘</kbd><kbd>⇧</kbd><kbd>V</kbd>.
 
-The two versions are the same app. The App Store version runs in the App Sandbox, so its data lives in `~/Library/Containers/dev.arlint.clipster/` instead of the folder below.
+The two versions are the same app with one difference: **the App Store version doesn't auto-paste.** Apple only lets App Store apps use the Accessibility permission for accessibility features (guideline 2.4.5), so choosing an item copies it and you press <kbd>⌘</kbd><kbd>V</kbd>. The App Store version also runs in the App Sandbox, so its data lives in `~/Library/Containers/dev.arlint.clipster/` instead of the folder below.
 
-**Auto-paste** needs Accessibility permission so Hushclip can press <kbd>⌘</kbd><kbd>V</kbd> for you. Hushclip asks the first time you paste. Until you grant it, choosing an item copies it and you paste yourself. You can grant it under **System Settings → Privacy & Security → Accessibility**.
+**Auto-paste** (direct download only) needs Accessibility permission so Hushclip can press <kbd>⌘</kbd><kbd>V</kbd> for you. Hushclip asks the first time you paste. Until you grant it, choosing an item copies it and you paste yourself. You can grant it under **System Settings → Privacy & Security → Accessibility**.
 
 > Note: ⌘⇧V is a global shortcut, so it replaces "Paste and Match Style" in apps that use it. Hushclip always pastes plain text for text items, so you get the same result.
 
@@ -155,7 +155,7 @@ Releases are **signed and notarized** when these repository secrets are set: `MA
 
 ### Mac App Store
 
-The App Store build is made from [`project.yml`](project.yml) (run `xcodegen generate` after changing it), which adds the App Sandbox entitlement and an asset-catalog icon:
+The App Store build is made from [`project.yml`](project.yml) (run `xcodegen generate` after changing it), which adds the App Sandbox entitlement, an asset-catalog icon and the `APPSTORE` compilation condition (no auto-paste, so no Accessibility permission). To try that variant with SwiftPM: `swift build --build-path .build-appstore -Xswiftc -DAPPSTORE`.
 
 ```bash
 xcodebuild archive -project Hushclip.xcodeproj -scheme Hushclip -archivePath build/Hushclip.xcarchive -allowProvisioningUpdates

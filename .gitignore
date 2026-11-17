@@ -7,3 +7,4 @@
 snapshot.png
 *.xcodeproj/project.xcworkspace/xcuserdata/
 /DerivedData/
+/.build-*/

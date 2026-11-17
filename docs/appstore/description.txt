@@ -1,6 +1,6 @@
 Hushclip keeps a searchable, encrypted history of everything you copy on your Mac, and brings it back with one shortcut.
 
-Press ⌘⇧V anywhere to open a fast, good-looking overlay. Type to search, use the arrow keys to pick, and press Return to paste straight into the app you were using.
+Press ⌘⇧V anywhere to open a fast, good-looking overlay. Type to search, use the arrow keys to pick, and press Return to put it back on your clipboard, ready to paste with ⌘V.
 
 SORTED AUTOMATICALLY
 Every clip is labelled as you copy it, using rules that run entirely on your Mac:
@@ -13,11 +13,11 @@ Every clip is labelled as you copy it, using rules that run entirely on your Mac
 Press Tab to flip through categories, or just start typing.
 
 QUICK ACTIONS FOR EVERY KIND OF CLIP
-• Open a link with ⌘O, or paste it without tracking junk or as a Markdown link
+• Open a link with ⌘O, or copy it without tracking junk or as a Markdown link
 • Call or message a phone number, or start an email
-• Paste a color as HEX, RGB, HSL or SwiftUI
+• Copy a color as HEX, RGB, HSL or SwiftUI
 • Pretty-print or minify JSON, and strip the $ prompt from shell commands
-• Paste the text from a screenshot, recognized right on your Mac
+• Copy the text from a screenshot, recognized right on your Mac
 • Show a file or path in Finder
 Press ⌘K to see every action for the selected clip.
 
@@ -33,12 +33,9 @@ PRIVATE BY DESIGN
 • No network access, no accounts, no analytics. Nothing is ever collected.
 
 FAST AND KEYBOARD-FIRST
-• ⌘1–⌘9 pastes one of your nine most recent items
+• ⌘1–⌘9 copies one of your nine most recent items
 • ⌘P pins an item so it never expires
-• ⌘Return copies without pasting
 • ⌘Delete removes an item
 
 NATIVE AND LIGHT
 Hushclip is written in Swift, lives quietly in your menu bar, and uses almost no resources. Pay once, own it forever: no subscription, no in-app purchases. Hushclip is also open source.
-
-Optional: allow Accessibility access so Hushclip can paste for you. Without it, Hushclip copies the item and you press ⌘V yourself.

@@ -27,6 +27,24 @@ enum Paster {
         pb.setString(Bundle.main.bundleIdentifier ?? "dev.arlint.clipster", forType: PasteboardMonitor.sourceType)
     }
 
+    /// Whether this build can press ⌘V for the user.
+    ///
+    /// The Mac App Store build (compiled with `APPSTORE`, see project.yml) can't: posting
+    /// keystrokes needs the Accessibility permission, which App Review only allows for
+    /// accessibility features (guideline 2.4.5). That build copies the item and the user
+    /// pastes; the code that posts events isn't compiled into it at all.
+    #if APPSTORE
+    static let canAutoPaste = false
+    #else
+    static let canAutoPaste = true
+    #endif
+
+    #if APPSTORE
+    static var isTrusted: Bool { false }
+    static func promptForAccessibility() {}
+    static func openAccessibilitySettings() {}
+    static func sendPasteKeystroke() {}
+    #else
     /// Whether Hushclip may post the ⌘V keystroke. Uses the post-event permission API,
     /// which (unlike the AXUIElement APIs) works inside the App Sandbox. It is shown to
     /// the user under Privacy & Security → Accessibility.
@@ -53,5 +71,21 @@ enum Paster {
         up?.flags = .maskCommand
         down?.post(tap: .cghidEventTap)
         up?.post(tap: .cghidEventTap)
+    }
+    #endif
+
+    /// What choosing an item does, for labels: "Paste" when Hushclip pastes, "Copy" when it copies.
+    static var verb: String { canAutoPaste && Prefs.autoPaste ? "Paste" : "Copy" }
+}
+
+@MainActor
+extension QuickAction {
+    /// The title as shown: "Paste as HEX" becomes "Copy as HEX" when this build copies.
+    var displayTitle: String { Self.relabel(title) }
+    var displayShortTitle: String { Self.relabel(shortTitle) }
+
+    private static func relabel(_ s: String) -> String {
+        guard Paster.verb == "Copy", s.hasPrefix("Paste") else { return s }
+        return "Copy" + s.dropFirst(5)
     }
 }

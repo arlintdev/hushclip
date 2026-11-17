@@ -208,12 +208,18 @@ final class OverlayController {
         let menu = NSMenu()
         menu.autoenablesItems = false
 
-        menu.addItem(BlockMenuItem("Paste", symbol: "doc.on.clipboard", key: "\r", modifiers: []) {
-            model.perform(item, .paste)
-        })
-        menu.addItem(BlockMenuItem("Copy", symbol: "square.on.square", key: "\r", modifiers: .command) {
-            model.perform(item, .copy)
-        })
+        if Paster.verb == "Paste" {
+            menu.addItem(BlockMenuItem("Paste", symbol: "doc.on.clipboard", key: "\r", modifiers: []) {
+                model.perform(item, .paste)
+            })
+            menu.addItem(BlockMenuItem("Copy", symbol: "square.on.square", key: "\r", modifiers: .command) {
+                model.perform(item, .copy)
+            })
+        } else {
+            menu.addItem(BlockMenuItem("Copy", symbol: "doc.on.clipboard", key: "\r", modifiers: []) {
+                model.perform(item, .paste)
+            })
+        }
 
         if model.canEnlarge(item) {
             menu.addItem(BlockMenuItem("Quick Look", symbol: "eye", key: "y", modifiers: .command) {
@@ -226,7 +232,7 @@ final class OverlayController {
             menu.addItem(.separator())
             let primary = model.primaryAction(for: item)?.id
             for action in actions {
-                let entry = BlockMenuItem(action.title, symbol: action.symbol,
+                let entry = BlockMenuItem(action.displayTitle, symbol: action.symbol,
                                           key: action.id == primary ? "o" : "", modifiers: .command) {
                     model.runAction(item, action)
                 }

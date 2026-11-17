@@ -65,19 +65,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         monitor.ignoreCurrentContents()
         store.markUsed(item.id)
         overlay.hide()
-        if action == .paste { autoPaste() }
+        if action == .paste { autoPaste() } else { Toast.copied() }
     }
 
-    /// Presses ⌘V in the app the user was in, if auto-paste is on and allowed.
+    /// Presses ⌘V in the app the user was in, if this build can, auto-paste is on and it's
+    /// allowed. Otherwise the item is on the clipboard: say so.
     private func autoPaste() {
-        guard Prefs.autoPaste else { return }
-        if Paster.isTrusted {
-            // Give the previous app a moment to regain key focus.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) { Paster.sendPasteKeystroke() }
-        } else if !Prefs.askedAccessibility {
-            Prefs.askedAccessibility = true
-            Paster.promptForAccessibility()
+        if Paster.canAutoPaste && Prefs.autoPaste {
+            if Paster.isTrusted {
+                // Give the previous app a moment to regain key focus.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) { Paster.sendPasteKeystroke() }
+                return
+            }
+            if !Prefs.askedAccessibility {
+                Prefs.askedAccessibility = true
+                Paster.promptForAccessibility()
+            }
         }
+        Toast.copied()
     }
 
     // MARK: - Quick actions
